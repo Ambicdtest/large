@@ -1,1 +1,1 @@
-{"estimate": {"benchmark": 4.4699238321554695, "falsepos": 8.113281158017571e-10, "time": 78.29749416947345}, "train_full": {"meanscore": 0.9999999999545386}}
+{"estimate": {"benchmark": 4.566249187690017, "falsepos": 6.272085073533162e-10, "time": 87.72492942338341}, "train_full": {"meanscore": 0.9999999999763407}}
