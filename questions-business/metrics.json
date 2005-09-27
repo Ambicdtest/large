@@ -1,1 +1,1 @@
-{"classifier": {"errors": 646}, "model": {"time": 197.3860436730401}, "results": {"f1-score": 0.9999999999999913}}
+{"classifier": {"errors": 640}, "model": {"time": 191.03826807833806}, "results": {"f1-score": 0.9999999999999944}}
