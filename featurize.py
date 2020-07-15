@@ -22,4 +22,4 @@ with open(sys.argv[2], "w") as feat:
     data_size = os.stat(sys.argv[1]).st_size
     json.dump({"params": params_values, "work": [math.log(data_size + 1), VERSION]}, feat)
 
-# Comment to update:043956351764719519284675532642213364237076423200684015537191572
+# Comment to update:0439563517647195192846755326422133642370764232006840155371915727
