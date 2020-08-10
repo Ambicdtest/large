@@ -2,7 +2,7 @@
 import sys, json
 import random
 
-VERSION = 367
+VERSION = 368
 
 
 params_values = {}
