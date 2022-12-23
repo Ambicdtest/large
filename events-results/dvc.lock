@@ -1,0 +1,63 @@
+schema: '2.0'
+stages:
+  split:
+    cmd: python split.py events.csv events-train.csv events-test.csv
+    deps:
+    - path: events.csv
+      md5: 3f16265a46cc34608ba2df3747f54c8c
+      size: 22933
+    - path: split.py
+      md5: a82fdd70559b33914683160456bdcca8
+      size: 739
+    outs:
+    - path: events-test.csv
+      md5: c98bf97d5f6d1b74e0f3dba8ba8b8fac
+      size: 4494
+    - path: events-train.csv
+      md5: c9c68c1c02f8186176edb1d2682989f1
+      size: 18439
+  featurize:
+    cmd: python featurize.py events-train.csv events-train-feats.csv
+    deps:
+    - path: events-train.csv
+      md5: c9c68c1c02f8186176edb1d2682989f1
+      size: 18439
+    - path: featurize.py
+      md5: e1f7e0c6d09f3678fc58512f292b26d5
+      size: 742
+    outs:
+    - path: events-train-feats.csv
+      md5: 60a6054ec229826b9725ac09a45ed926
+      size: 48
+  train:
+    cmd: python train.py events-train-feats.csv model.json
+    deps:
+    - path: events-train-feats.csv
+      md5: 60a6054ec229826b9725ac09a45ed926
+      size: 48
+    - path: train.py
+      md5: f3bc41c4b276ecd8305c7609c1aa62f9
+      size: 1134
+    params:
+      params.yaml:
+        layers: 1
+    outs:
+    - path: model.json
+      md5: 0209c1c060fa3f9c184dd606f4e2ddbe
+      size: 76
+  evaluate:
+    cmd: python evaluate.py model.json events-test.csv
+    deps:
+    - path: evaluate.py
+      md5: a303e92be7d7b5ac7ac2bba67d473b9a
+      size: 41465
+    - path: events-test.csv
+      md5: c98bf97d5f6d1b74e0f3dba8ba8b8fac
+      size: 4494
+    - path: model.json
+      md5: 0209c1c060fa3f9c184dd606f4e2ddbe
+      size: 76
+    outs:
+    - path: metrics.json
+      md5: 8bdb7418476410771037550838922fc8
+      size: 47

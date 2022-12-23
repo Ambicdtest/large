@@ -1,0 +1,34 @@
+stages:
+  split:
+    cmd: python split.py sentences.csv sentences-train.csv sentences-test.csv
+    deps:
+    - sentences.csv
+    - split.py
+    outs:
+    - sentences-test.csv
+    - sentences-train.csv
+  featurize:
+    cmd: python featurize.py sentences-train.csv sentences-train-feats.csv
+    deps:
+    - featurize.py
+    - sentences-train.csv
+    outs:
+    - sentences-train-feats.csv
+  train:
+    cmd: python train.py sentences-train-feats.csv model.json
+    deps:
+    - sentences-train-feats.csv
+    - train.py
+    params:
+    - batch_size
+    outs:
+    - model.json
+  evaluate:
+    cmd: python evaluate.py model.json sentences-test.csv
+    deps:
+    - evaluate.py
+    - model.json
+    - sentences-test.csv
+    metrics:
+    - metrics.json:
+        cache: false

@@ -1,0 +1,63 @@
+schema: '2.0'
+stages:
+  split:
+    cmd: python split.py impressions.csv impressions-train.csv impressions-test.csv
+    deps:
+    - path: impressions.csv
+      md5: b4bb7cfb2eb6216dc7844c8d02266593
+      size: 26331
+    - path: split.py
+      md5: a2f45308d3e7d611de6fd66b4a915b9c
+      size: 742
+    outs:
+    - path: impressions-test.csv
+      md5: ca579aa9b806d49d3748613108f8e01e
+      size: 4967
+    - path: impressions-train.csv
+      md5: d8da3b5ef58e7b76a698a1400c871589
+      size: 21364
+  featurize:
+    cmd: python featurize.py impressions-train.csv impressions-train-feats.csv
+    deps:
+    - path: featurize.py
+      md5: 11313d2a731ceffdd916d8b2ce2c4497
+      size: 755
+    - path: impressions-train.csv
+      md5: d8da3b5ef58e7b76a698a1400c871589
+      size: 21364
+    outs:
+    - path: impressions-train-feats.csv
+      md5: ef169136df7e063f38019941b0ce4747
+      size: 48
+  train:
+    cmd: python train.py impressions-train-feats.csv model.json
+    deps:
+    - path: impressions-train-feats.csv
+      md5: ef169136df7e063f38019941b0ce4747
+      size: 48
+    - path: train.py
+      md5: 7d8bc105feb37436237f94de912d7011
+      size: 1133
+    params:
+      params.yaml:
+        drop: 0.2153
+    outs:
+    - path: model.json
+      md5: 828a949fcde48fa0c367d43ebc20fb71
+      size: 79
+  evaluate:
+    cmd: python evaluate.py model.json impressions-test.csv
+    deps:
+    - path: evaluate.py
+      md5: 937a663748cd7fa0046366bd87d7c9e1
+      size: 41571
+    - path: impressions-test.csv
+      md5: ca579aa9b806d49d3748613108f8e01e
+      size: 4967
+    - path: model.json
+      md5: 828a949fcde48fa0c367d43ebc20fb71
+      size: 79
+    outs:
+    - path: metrics.json
+      md5: 48d32bab1ab120ddbe3a332c702c7a6a
+      size: 94

@@ -1,0 +1,34 @@
+stages:
+  split:
+    cmd: python split.py impressions.csv impressions-train.csv impressions-test.csv
+    deps:
+    - impressions.csv
+    - split.py
+    outs:
+    - impressions-test.csv
+    - impressions-train.csv
+  featurize:
+    cmd: python featurize.py impressions-train.csv impressions-train-feats.csv
+    deps:
+    - featurize.py
+    - impressions-train.csv
+    outs:
+    - impressions-train-feats.csv
+  train:
+    cmd: python train.py impressions-train-feats.csv model.json
+    deps:
+    - impressions-train-feats.csv
+    - train.py
+    params:
+    - batch_size
+    outs:
+    - model.json
+  evaluate:
+    cmd: python evaluate.py model.json impressions-test.csv
+    deps:
+    - evaluate.py
+    - impressions-test.csv
+    - model.json
+    metrics:
+    - metrics.json:
+        cache: false

@@ -1,0 +1,34 @@
+stages:
+  split:
+    cmd: python split.py questions.csv questions-train.csv questions-test.csv
+    deps:
+    - questions.csv
+    - split.py
+    outs:
+    - questions-test.csv
+    - questions-train.csv
+  featurize:
+    cmd: python featurize.py questions-train.csv questions-train-feats.csv
+    deps:
+    - featurize.py
+    - questions-train.csv
+    outs:
+    - questions-train-feats.csv
+  train:
+    cmd: python train.py questions-train-feats.csv model.json
+    deps:
+    - questions-train-feats.csv
+    - train.py
+    params:
+    - tags
+    outs:
+    - model.json
+  evaluate:
+    cmd: python evaluate.py model.json questions-test.csv
+    deps:
+    - evaluate.py
+    - model.json
+    - questions-test.csv
+    metrics:
+    - metrics.json:
+        cache: false

@@ -1,0 +1,60 @@
+schema: '2.0'
+stages:
+  split:
+    cmd: python split.py documents.csv documents-train.csv documents-test.csv
+    deps:
+    - path: documents.csv
+      md5: 2d58f896370603d99725a36044a90d19
+      size: 38850
+    - path: split.py
+      md5: 6029cd25d24cebefe22a55087069f634
+      size: 758
+    outs:
+    - path: documents-test.csv
+      md5: 646e607a1386856e397990a34ddaaae2
+      size: 7267
+    - path: documents-train.csv
+      md5: dd38c27f0e8627c2f83967cbfe01e315
+      size: 31583
+  featurize:
+    cmd: python featurize.py documents-train.csv documents-train-feats.csv
+    deps:
+    - path: documents-train.csv
+      md5: dd38c27f0e8627c2f83967cbfe01e315
+      size: 31583
+    - path: featurize.py
+      md5: 6f5aae5eb260f2f75d5b4d2fa71dc28c
+      size: 754
+    outs:
+    - path: documents-train-feats.csv
+      md5: b504828075ca50b9c1e61af5b3d998c9
+      size: 49
+  train:
+    cmd: python train.py documents-train-feats.csv model.json
+    deps:
+    - path: documents-train-feats.csv
+      md5: b504828075ca50b9c1e61af5b3d998c9
+      size: 49
+    - path: train.py
+      md5: af1996e157929f9d3d3e26b509274992
+      size: 682
+    outs:
+    - path: model.json
+      md5: 42d3b16d03e3fc129c608f6932221656
+      size: 54
+  evaluate:
+    cmd: python evaluate.py model.json documents-test.csv
+    deps:
+    - path: documents-test.csv
+      md5: 646e607a1386856e397990a34ddaaae2
+      size: 7267
+    - path: evaluate.py
+      md5: ddfce481081f4389530377780742364b
+      size: 41656
+    - path: model.json
+      md5: 42d3b16d03e3fc129c608f6932221656
+      size: 54
+    outs:
+    - path: metrics.json
+      md5: 045b34116b414422048c0cc9112b2759
+      size: 126

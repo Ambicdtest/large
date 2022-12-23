@@ -1,0 +1,63 @@
+schema: '2.0'
+stages:
+  split:
+    cmd: python split.py questions.csv questions-train.csv questions-test.csv
+    deps:
+    - path: questions.csv
+      md5: 3e1c1360f70695bded2af21387a74b56
+      size: 34500
+    - path: split.py
+      md5: a8084c7936b6439501375571e97d469c
+      size: 757
+    outs:
+    - path: questions-test.csv
+      md5: 4e38f9f001173b5557210c7855e09eb5
+      size: 6412
+    - path: questions-train.csv
+      md5: 417e947b812a5a132cd28634f61157b5
+      size: 28088
+  featurize:
+    cmd: python featurize.py questions-train.csv questions-train-feats.csv
+    deps:
+    - path: featurize.py
+      md5: e3d3bf0d6e50d2723ec8a77ad4c7f550
+      size: 723
+    - path: questions-train.csv
+      md5: 417e947b812a5a132cd28634f61157b5
+      size: 28088
+    outs:
+    - path: questions-train-feats.csv
+      md5: 6be94986a58f69cec7f958e8faaf6c8b
+      size: 49
+  train:
+    cmd: python train.py questions-train-feats.csv model.json
+    deps:
+    - path: questions-train-feats.csv
+      md5: 6be94986a58f69cec7f958e8faaf6c8b
+      size: 49
+    - path: train.py
+      md5: c13df3cabacb7c03a25ffa266d04898d
+      size: 1133
+    params:
+      params.yaml:
+        tags: 51
+    outs:
+    - path: model.json
+      md5: 97d2694e814f5e85b21ef6eaac0bb84b
+      size: 76
+  evaluate:
+    cmd: python evaluate.py model.json questions-test.csv
+    deps:
+    - path: evaluate.py
+      md5: e989f61fb8e0f5dcbfdcc0f55062abb8
+      size: 41542
+    - path: model.json
+      md5: 97d2694e814f5e85b21ef6eaac0bb84b
+      size: 76
+    - path: questions-test.csv
+      md5: 4e38f9f001173b5557210c7855e09eb5
+      size: 6412
+    outs:
+    - path: metrics.json
+      md5: e9cdf80231fcbf4b7184dbed3063a8c6
+      size: 101
